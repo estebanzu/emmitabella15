@@ -691,7 +691,7 @@
         <section class="seccion reveal" id="libro">
             <div class="tarjeta">
                 <div style="text-align: right; margin-bottom: 10px;">
-                    <button onclick="toggleAdminMode()" id="adminBtn" class="btn-outline" style="min-height: 30px; padding: 5px 15px; font-size: 0.7rem;">Modo Administrador</button>
+                    <button onclick="toggleAdminMode()" id="adminBtn" class="btn-outline" style="min-height: 30px; padding: 5px 15px; font-size: 0.7rem;">Adm</button>
                 </div>
                 <h2>Libro de Visitas</h2>
                 <p class="texto">¡Deja un mensaje especial para Emma!</p>
@@ -817,7 +817,7 @@
         // 5. MODO ADMINISTRADOR GUESTBOOK
         function toggleAdminMode() {
             if (!isAdmin) {
-                if (prompt("Clave de administrador:") === "Emma2026") {
+                if (prompt("Clave de administrador:") === "3mm4gusJul1!") {
                     isAdmin = true;
                     sessionStorage.setItem("adminAuth", "true");
                     renderGuestBook();
