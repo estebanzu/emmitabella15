@@ -661,13 +661,13 @@
             </div>
         </section>
 
-        <!-- SECCIÓN DE ÁLBUM RESTAURADA -->
+        <!-- SECCIÓN DE ÁLBUM CON BOTÓN DINÁMICO -->
         <div class="seccion-alt" id="galeria">
             <section class="seccion reveal">
                 <div class="tarjeta">
                     <div class="album-icon">🔐</div>
                     <h2>Álbum Privado de Emma</h2>
-                    <p class="texto">Esta galería de fotos está protegida por contraseña. Ingrese el código de su invitación oficial para acceder.</p>
+                    <p class="texto">Esta galería de fotos está protegida con contraseña. Introduce el código de tu invitación oficial para verla. ¡También puedes subir tus fotos y videos aquí para que tengamos todo en el mismo lugar!</p>
                     
                     <div class="lock-container" id="lockContainer">
                         <input type="password" id="albumPassword" placeholder="Contraseña" class="pass-input" />
@@ -675,13 +675,13 @@
                         <p id="errorMsg" style="color: #c9302c; font-size: 0.85rem; margin-top: 15px; display: none; font-weight: 600;">❌ Contraseña incorrecta. Inténtalo de nuevo.</p>
                     </div>
 
+                    <!-- El contenedor ahora está vacío y se llenará por JS -->
                     <div id="albumAccess" style="display: none;">
                         <div class="album-status" style="margin-bottom: 20px;">
                             <div class="dot" style="background: #4cae4c;"></div>
                             <span style="color: #4cae4c; font-weight: 600;">Acceso Concedido</span>
                         </div>
-                        <br>
-                        <a href="https://photos.app.goo.gl/7khhs5sgzyDAyio19" target="_blank" class="btn">Ver Fotos en Google Photos</a>
+                        <div id="dynamicLinkContainer"></div>
                     </div>
                 </div>
             </section>
@@ -785,15 +785,29 @@
             }
         });
 
-        // 4. CONTROL DE ACCESO ÁLBUM
+        // 4. CONTROL DE ACCESO ÁLBUM (BOTÓN DINÁMICO E INFALIBLE)
         function checkPassword() {
             const input = document.getElementById("albumPassword").value.trim();
             const errorMsg = document.getElementById("errorMsg");
+            const linkContainer = document.getElementById("dynamicLinkContainer");
+            const secretUrl = "https://photos.app.goo.gl/7khhs5sgzyDAyio19";
+
             if (input === "Emma2026") {
                 errorMsg.style.display = "none";
                 document.getElementById("lockContainer").style.display = "none";
                 document.getElementById("albumAccess").style.display = "block";
-                window.open("https://photos.app.goo.gl/7khhs5sgzyDAyio19", "_blank");
+                
+                // Creamos el botón de la nada para que no esté en el código fuente original
+                const btn = document.createElement("a");
+                btn.href = secretUrl;
+                btn.target = "_blank";
+                btn.className = "btn";
+                btn.innerText = "Ver y Subir Fotos / Videos";
+                
+                linkContainer.appendChild(btn);
+
+                // Abrir automáticamente después de la validación
+                window.open(secretUrl, "_blank");
             } else {
                 errorMsg.style.display = "block";
                 document.getElementById("albumPassword").value = "";
