@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Los Quince de Emma</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* =========================================================
+           MIQUINCEPARTY PLATFORM STYLE VARIABLES
+        ========================================================= */
+        :root {
+            --mqp-bg: #FFFFFF;
+            --mqp-section-bg: #FFF5F5;
+            --mqp-accent-pink: #F5C6C0;
+            --mqp-gold: #C9916A;
+            --mqp-gold-dark: #9E6B49;
+            --mqp-text-dark: #332B28;
+            --mqp-text-muted: #736762;
+            --mqp-border: #EADCDA;
+        }
+
+        /* =========================================================
+           RESET & BASIC LAYOUT
+        ========================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--mqp-text-dark);
+            background-color: var(--mqp-bg);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* =========================================================
+           PLATFORM HEADER & INTRO HERO
+        ========================================================= */
+        header {
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.75)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop') center center/cover no-repeat;
+            padding: 100px 20px 80px 20px;
+            border-bottom: 4px solid var(--mqp-accent-pink);
+        }
+
+        .hero-title-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .subtitulo {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--mqp-text-muted);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(3.8rem, 12vw, 6.5rem);
+            color: var(--mqp-gold);
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .mqp-divider {
+            width: 150px;
+            height: 1px;
+            background-color: var(--mqp-gold);
+            margin: 25px auto;
+        }
+
+        .fecha {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: var(--mqp-text-dark);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator {
+            margin-top: 40px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--mqp-text-muted);
+            text-transform: uppercase;
+        }
+
+        /* =========================================================
+           SECTIONS & BLOCKS
+        ========================================================= */
+        main {
+            width: 100%;
+            padding: 40px 0 100px 0;
+        }
+
+        .seccion {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .tarjeta {
+            background-color: var(--mqp-bg);
+            border: 1px solid var(--mqp-border);
+            border-radius: 8px;
+            padding: 50px 40px;
+            box-shadow: 0 4px 20px rgba(115, 103, 98, 0.05);
+            text-align: center;
+        }
+
+        /* Alternating section background style like templates */
+        .seccion-alt {
+            background-color: var(--mqp-section-bg);
+            padding: 60px 0;
+            border-top: 1px solid var(--mqp-border);
+            border-bottom: 1px solid var(--mqp-border);
+        }
+        .seccion-alt .seccion {
+            margin: 0 auto;
+        }
+        .seccion-alt .tarjeta {
+            border: none;
+            box-shadow: none;
+            background: transparent;
+            padding: 10px 20px;
+        }
+
+        h2 {
+            color: var(--mqp-text-dark);
+            font-size: clamp(1.5rem, 6vw, 2.1rem);
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        h2::after {
+            content: "";
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--mqp-accent-pink);
+            margin: 12px auto 0 auto;
+        }
+
+        .texto {
+            color: var(--mqp-text-muted);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        /* =========================================================
+           MIQUINCEPARTY BLOCK COUNTDOWN
+        ========================================================= */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .time {
+            flex: 1;
+            min-width: 85px;
+            max-width: 110px;
+            background-color: var(--mqp-section-bg);
+            border: 1px solid var(--mqp-border);
+            border-radius: 4px;
+            padding: 20px 10px;
+        }
+
+        .time span {
+            display: block;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 300;
+            color: var(--mqp-gold);
+            line-height: 1;
+        }
+
+        .time label {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--mqp-text-muted);
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           TIMELINE / ITINERARIO
+        ========================================================= */
+        .timeline {
+            margin-top: 35px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+            border-bottom: 1px dashed var(--mqp-border);
+            padding: 20px 5px;
+            text-align: left;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-time {
+            min-width: 90px;
+            font-weight: 700;
+            color: var(--mqp-gold);
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+        }
+
+        .timeline-desc {
+            font-size: 0.98rem;
+            color: var(--mqp-text-dark);
+            font-weight: 500;
+        }
+
+        /* =========================================================
+           DRESS CODE / CÓDIGO VESTIMENTA
+        ========================================================= */
+        .quote {
+            padding: 0 20px;
+            margin-bottom: 35px;
+        }
+
+        .quote p {
+            color: var(--mqp-gold-dark);
+            font-style: italic;
+            font-size: 1.15rem;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .vestimenta {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .vestimenta-card {
+            background: #FFFFFF;
+            border: 1px solid var(--mqp-border);
+            border-radius: 6px;
+            padding: 30px 20px;
+        }
+
+        .vestimenta-card.special {
+            background-color: #FFFDFB;
+            border: 1px dashed var(--mqp-gold);
+        }
+
+        .vestimenta-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            color: var(--mqp-text-dark);
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 15px;
+            background: var(--mqp-text-dark);
+            color: #FFFFFF;
+            padding: 8px 22px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           FORM CONTROLS & ALBUM ACCESSIBILITY
+        ========================================================= */
+        .lock-container {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pass-input {
+            width: 100%;
+            max-width: 280px;
+            padding: 14px 20px;
+            border: 1px solid var(--mqp-border);
+            background: #FFFFFF;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            color: var(--mqp-text-dark);
+            outline: none;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .pass-input:focus {
+            border-color: var(--mqp-gold);
+        }
+
+        .album-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .album-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--mqp-section-bg);
+            border: 1px solid var(--mqp-border);
+            border-radius: 4px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--mqp-gold);
+        }
+
+        /* =========================================================
+           GUEST BOOK (LIBRO DE VISITAS) PLATFORM FEATURE
+        ========================================================= */
+        .gb-form {
+            max-width: 550px;
+            margin: 30px auto 0 auto;
+            text-align: left;
+            border-top: 1px solid var(--mqp-border);
+            padding-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: var(--mqp-text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--mqp-border);
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--mqp-text-dark);
+            font-size: 0.95rem;
+            outline: none;
+            background-color: #FFFFFF;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--mqp-gold);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .gb-entries {
+            margin-top: 40px;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .gb-card {
+            background: #FFFFFF;
+            border: 1px solid var(--mqp-border);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .gb-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--mqp-accent-pink);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .gb-content {
+            flex-grow: 1;
+        }
+
+        .gb-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .gb-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--mqp-text-dark);
+        }
+
+        .gb-date {
+            font-size: 0.75rem;
+            color: var(--mqp-text-muted);
+        }
+
+        .gb-text {
+            font-size: 0.92rem;
+            color: var(--mqp-text-muted);
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* =========================================================
+           BUTTON SIGNATURES
+        ========================================================= */
+        .btn, .btn-outline {
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border-radius: 4px;
+            padding: 12px 35px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background-color: var(--mqp-gold);
+            color: #FFFFFF;
+        }
+
+        .btn:hover {
+            background-color: var(--mqp-gold-dark);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--mqp-gold);
+            color: var(--mqp-gold);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--mqp-section-bg);
+        }
+
+        /* =========================================================
+           PERSISTENT SYSTEM BAR OVERLAYS (MUSIC & NAV)
+        ========================================================= */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--mqp-border);
+            border-radius: 50%;
+            background: #FFFFFF;
+            cursor: pointer;
+            z-index: 9999;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--mqp-text-dark);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            background: #FFFFFF;
+            border-top: 1px solid var(--mqp-border);
+            padding: 5px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .bottom-nav a {
+            text-decoration: none;
+            color: var(--mqp-text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 12px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav a:hover {
+            color: var(--mqp-gold);
+        }
+
+        /* =========================================================
+           SCROLL INTERSECTION ENGINE (REVEAL)
+        ========================================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================================
+           FOOTER PLATFORM BRANDING
+        ========================================================= */
+        footer {
+            padding: 60px 20px 100px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--mqp-text-muted);
+            border-top: 1px solid var(--mqp-border);
+            background-color: var(--mqp-section-bg);
+        }
+
+        footer .branding {
+            margin-top: 15px;
+            font-size: 0.72rem;
+            opacity: 0.7;
+        }
+
+        /* =========================================================
+           RESPONSIVE RE-GRIDDING
+        ========================================================= */
+        @media(min-width:640px){
+            .vestimenta { grid-template-columns: 1fr 1fr; }
+            .tarjeta { padding: 60px 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="music-btn" id="musicBtn">♫</button>
+
+    <audio id="music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <header id="inicio">
+        <div class="hero-title-container reveal">
+            <p class="subtitulo">Welcome to my Quinceañera page</p>
+            <h1>Emma de La O</h1>
+            <div class="mqp-divider"></div>
+            <p class="fecha">15 de Mayo de 2026 · 6:00 PM</p>
+            <div class="scroll-indicator">Scroll down to learn more ✨</div>
+        </div>
+    </header>
+
+    <main>
+        <section class="seccion reveal">
+            <div class="tarjeta">
+                <h2>Cuenta Regresiva</h2>
+                <p class="texto">Estoy muy emocionada de compartir mi día especial con toda mi familia y amigos. ¡Cada momento nos acerca más!</p>
+                <div class="countdown" id="countdown">
+                    <div class="time">
+                        <span id="dias">00</span>
+                        <label>Días</label>
+                    </div>
+                    <div class="time">
+                        <span id="horas">00</span>
+                        <label>Horas</label>
+                    </div>
+                    <div class="time">
+                        <span id="minutos">00</span>
+                        <label>Min</label>
+                    </div>
+                    <div class="time">
+                        <span id="segundos">00</span>
+                        <label>Seg</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="seccion-alt" id="itinerario">
+            <section class="seccion reveal">
+                <div class="tarjeta">
+                    <h2>Itinerario del Evento</h2>
+                    <p class="texto">Please join us for the sequence of special events during my celebration.</p>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">6:00 PM</div>
+                            <div class="timeline-desc">Recepción de los Invitados</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">7:00 PM</div>
+                            <div class="timeline-desc">Cena</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">8:00 PM</div>
+                            <div class="timeline-desc">Baile y Fiesta</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">11:00 PM</div>
+                            <div class="timeline-desc">Fin de la actividad</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="seccion reveal" id="detalles">
+            <div class="tarjeta">
+                <h2>Código de Vestimenta</h2>
+                <div class="quote">
+                    <p>"La elegancia es la única belleza que nunca se desvanece."</p>
+                </div>
+                <div class="vestimenta">
+                    <div class="vestimenta-card">
+                        <div class="vestimenta-title">Hombres y Mujeres</div>
+                        <p class="texto">Código de vestimenta: Formal elegante o traje de etiqueta.</p>
+                        <span class="badge">Formal Elegante</span>
+                    </div>
+                    <div class="vestimenta-card special">
+                        <div class="vestimenta-title">Nota Especial</div>
+                        <p class="texto">Rogamos a nuestros invitados asistir con vestimenta formal elegante o rigurosa etiqueta</p>
+                    </div>
+                </div>
+                <a href="https://wa.me/50686489691?text=Confirmo%20mi%20asistencia%20a%20los%20XV%20de%20Emma" target="_blank" class="btn">Confirmar Asistencia / RSVP</a>
+            </div>
+        </section>
+
+        <div class="seccion-alt" id="galeria">
+            <section class="seccion reveal">
+                <div class="tarjeta">
+                    <div class="album-icon">🔐</div>
+                    <h2>Álbum Privado de Emma</h2>
+                    <p class="texto">Esta galería de fotos está protegida por contraseña. Ingrese el código de su invitación oficial para acceder. Además, puede subir sus fotos y videos aquí para que logremos tener todo en el mismo lugar</p>
+                    
+                    <div class="lock-container" id="lockContainer">
+                        <input type="password" id="albumPassword" placeholder="Contraseña" class="pass-input" />
+                        <button onclick="checkPassword()" class="btn">Acceder Álbum</button>
+                        <p id="errorMsg" style="color: #c9302c; font-size: 0.85rem; margin-top: 15px; display: none; font-weight: 600;">❌ Contraseña incorrecta. Inténtalo de nuevo.</p>
+                    </div>
+
+                    <div id="albumAccess" style="display: none;">
+                        <div class="album-status" style="margin-bottom: 20px;">
+                            <div class="dot" style="background: #4cae4c;"></div>
+                            <span style="color: #4cae4c; font-weight: 600;">Acceso Concedido</span>
+                        </div>
+                        <br>
+                        <a href="https://photos.app.goo.gl/7khhs5sgzyDAyio19" target="_blank" class="btn">Ver Fotos en Google Photos</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="seccion reveal" id="libro">
+            <div class="tarjeta">
+                <h2>Guest Book / Libro de Visitas</h2>
+                <p class="texto">¡Deja un lindo comentario, un cálido mensaje de felicitación o comparte tu recuerdo más querido con Emma!</p>
+                
+                <form id="guestbookForm" class="gb-form" onsubmit="handleGuestBookSubmit(event)">
+                    <div class="form-group">
+                        <label for="gbName">Tu Nombre / Your Name</label>
+                        <input type="text" id="gbName" class="form-control" placeholder="Ej. Tía María o Familia Gómez" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="gbMessage">Tu Mensaje o Recuerdo / Message or Memory</label>
+                        <textarea id="gbMessage" class="form-control" placeholder="¡Escribe tus felicitaciones aquí!..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Dejar Mensaje ✍️</button>
+                </form>
+
+                <div class="gb-entries" id="guestbookEntries">
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Te esperamos para celebrar juntos · Emma 2026</p>
+        <div class="branding">©2026 Mi papa me ama mucho y me hizo esto | All Rights Reserved</div>
+    </footer>
+
+    <nav class="bottom-nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#itinerario">Itinerario</a>
+        <a href="#detalles">Detalles</a>
+        <a href="#libro">Libro</a>
+    </nav>
+
+    <script>
+        // 1. COUNTDOWN SYSTEM CALCULATION
+        const targetDate = new Date("May 15, 2026 18:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                document.getElementById("countdown").innerHTML = "<p class='texto' style='font-weight:600; color:var(--mqp-gold);'>¡Llegó el gran día!</p>";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("dias").innerText = days < 10 ? '0' + days : days;
+            document.getElementById("horas").innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById("minutos").innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById("segundos").innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 2. ELEMENT SCROLL INTRO INTERSECTION ENGINE
+        const revealElements = document.querySelectorAll(".reveal");
+        
+        function handleScrollReveal() {
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 40) {
+                    element.classList.add("visible");
+                }
+            });
+        }
+        window.addEventListener("scroll", handleScrollReveal);
+        handleScrollReveal();
+
+        // 3. AMBIENT AUDIO LOGIC CONTROLLER
+        const music = document.getElementById("music");
+        const musicBtn = document.getElementById("musicBtn");
+
+        musicBtn.addEventListener("click", () => {
+            if (music.paused) {
+                music.play().then(() => {
+                    musicBtn.innerText = "⏸";
+                }).catch(err => console.log("Audio blocked by user gesture requirements:", err));
+            } else {
+                music.pause();
+                musicBtn.innerText = "♫";
+            }
+        });
+        // 4. CONTROL DE ACCESO SIMPLE (Comparación directa en texto plano)
+        function checkPassword() {
+            // Limpiamos espacios accidentales que puedan meter los teclados móviles
+            const input = document.getElementById("albumPassword").value.trim();
+            const errorMsg = document.getElementById("errorMsg");
+            
+            // Validación directa sin cifrado
+            if (input === "Emma2026") {
+                errorMsg.style.display = "none";
+                document.getElementById("lockContainer").style.display = "none";
+                document.getElementById("albumAccess").style.display = "block";
+                
+                // Redirección inmediata al álbum de fotos
+                window.open("https://photos.app.goo.gl/7khhs5sgzyDAyio19", "_blank");
+            } else {
+                // Contraseña incorrecta
+                errorMsg.style.display = "block";
+                document.getElementById("albumPassword").value = "";
+            }
+        }
+
+        document.getElementById("albumPassword")?.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                checkPassword();
+            }
+        });
+
+        // 5. DATA LOCAL PERSISTENCE STORAGE LAYER FOR GUEST BOOK
+        const STORAGE_KEY = "mqp_emma_guestbook_entries";
+
+        // Initial standard default entries to populate empty state seamlessly
+        const seedEntries = [
+            { name: "Julian Zuniga", date: "Hace unos momentos", message: "¡Felices 15, Emma! Te amo mucho ✨" },
+            { name: "Familia Zuniga Calderon", date: "Ayer", message: "Nos da muchísimo gusto verte cumplir tus quince años por fin. Tus papás están muy orgullosos de ti. ¡Que se cumplan todos tus deseos!" }
+        ];
+
+        function getEntries() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : seedEntries;
+        }
+
+        function renderGuestBook() {
+            const entries = getEntries();
+            const container = document.getElementById("guestbookEntries");
+            container.innerHTML = "";
+
+            entries.forEach(entry => {
+                const initial = entry.name ? entry.name.charAt(0) : "U";
+                const cardHtml = `
+                    <div class="gb-card">
+                        <div class="gb-avatar">${initial}</div>
+                        <div class="gb-content">
+                            <div class="gb-meta">
+                                <span class="gb-name">${escapeHtml(entry.name)}</span>
+                                <span class="gb-date">${entry.date}</span>
+                            </div>
+                            <p class="gb-text">"${escapeHtml(entry.message)}"</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        function handleGuestBookSubmit(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById("gbName");
+            const messageInput = document.getElementById("gbMessage");
+
+            const newEntry = {
+                name: nameInput.value.trim(),
+                message: messageInput.value.trim(),
+                date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+            };
+
+            const currentEntries = getEntries();
+            currentEntries.unshift(newEntry); // Add to top of array runtime stack
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentEntries));
+
+            // Reset UI components
+            nameInput.value = "";
+            messageInput.value = "";
+            renderGuestBook();
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Initialize components inside window DOM injection cycle
+        document.addEventListener("DOMContentLoaded", () => {
+            renderGuestBook();
+        });
+    </script>
+</body>
+</html>
