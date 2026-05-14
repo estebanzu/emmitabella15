@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Librería de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         /* =========================================================
@@ -125,7 +128,6 @@
             text-align: center;
         }
 
-        /* Alternating section background style like templates */
         .seccion-alt {
             background-color: var(--mqp-section-bg);
             padding: 60px 0;
@@ -167,9 +169,6 @@
             margin-bottom: 30px;
         }
 
-        /* =========================================================
-           MIQUINCEPARTY BLOCK COUNTDOWN
-        ========================================================= */
         .countdown {
             display: flex;
             justify-content: center;
@@ -206,9 +205,6 @@
             font-weight: 600;
         }
 
-        /* =========================================================
-           TIMELINE / ITINERARIO
-        ========================================================= */
         .timeline {
             margin-top: 35px;
             max-width: 600px;
@@ -243,9 +239,6 @@
             font-weight: 500;
         }
 
-        /* =========================================================
-           DRESS CODE / CÓDIGO VESTIMENTA
-        ========================================================= */
         .quote {
             padding: 0 20px;
             margin-bottom: 35px;
@@ -299,9 +292,6 @@
             font-weight: 600;
         }
 
-        /* =========================================================
-           FORM CONTROLS & ALBUM ACCESSIBILITY
-        ========================================================= */
         .lock-container {
             margin-top: 25px;
             display: flex;
@@ -353,9 +343,6 @@
             background: var(--mqp-gold);
         }
 
-        /* =========================================================
-           GUEST BOOK (LIBRO DE VISITAS) PLATFORM FEATURE
-        ========================================================= */
         .gb-form {
             max-width: 550px;
             margin: 30px auto 0 auto;
@@ -463,9 +450,6 @@
             font-style: italic;
         }
 
-        /* =========================================================
-           BUTTON SIGNATURES
-        ========================================================= */
         .btn, .btn-outline {
             min-height: 48px;
             display: inline-flex;
@@ -503,9 +487,6 @@
             background: var(--mqp-section-bg);
         }
 
-        /* =========================================================
-           PERSISTENT SYSTEM BAR OVERLAYS (MUSIC & NAV)
-        ========================================================= */
         .music-btn {
             position: fixed;
             top: 20px;
@@ -554,9 +535,6 @@
             color: var(--mqp-gold);
         }
 
-        /* =========================================================
-           SCROLL INTERSECTION ENGINE (REVEAL)
-        ========================================================= */
         .reveal {
             opacity: 0;
             transform: translateY(20px);
@@ -568,9 +546,6 @@
             transform: translateY(0);
         }
 
-        /* =========================================================
-           FOOTER PLATFORM BRANDING
-        ========================================================= */
         footer {
             padding: 60px 20px 100px 20px;
             text-align: center;
@@ -588,9 +563,6 @@
             opacity: 0.7;
         }
 
-        /* =========================================================
-           RESPONSIVE RE-GRIDDING
-        ========================================================= */
         @media(min-width:640px){
             .vestimenta { grid-template-columns: 1fr 1fr; }
             .tarjeta { padding: 60px 50px; }
@@ -689,12 +661,13 @@
             </div>
         </section>
 
+        <!-- SECCIÓN DE ÁLBUM RESTAURADA -->
         <div class="seccion-alt" id="galeria">
             <section class="seccion reveal">
                 <div class="tarjeta">
                     <div class="album-icon">🔐</div>
                     <h2>Álbum Privado de Emma</h2>
-                    <p class="texto">Esta galería de fotos está protegida por contraseña. Ingrese el código de su invitación oficial para acceder. Además, puede subir sus fotos y videos aquí para que logremos tener todo en el mismo lugar</p>
+                    <p class="texto">Esta galería de fotos está protegida por contraseña. Ingrese el código de su invitación oficial para acceder.</p>
                     
                     <div class="lock-container" id="lockContainer">
                         <input type="password" id="albumPassword" placeholder="Contraseña" class="pass-input" />
@@ -714,10 +687,14 @@
             </section>
         </div>
 
+        <!-- SECCIÓN DE LIBRO DE VISITAS RESTAURADA -->
         <section class="seccion reveal" id="libro">
             <div class="tarjeta">
-                <h2>Guest Book / Libro de Visitas</h2>
-                <p class="texto">¡Deja un lindo comentario, un cálido mensaje de felicitación o comparte tu recuerdo más querido con Emma!</p>
+                <div style="text-align: right; margin-bottom: 10px;">
+                    <button onclick="toggleAdminMode()" id="adminBtn" class="btn-outline" style="min-height: 30px; padding: 5px 15px; font-size: 0.7rem;">Modo Administrador</button>
+                </div>
+                <h2>Libro de Visitas</h2>
+                <p class="texto">¡Deja un mensaje especial para Emma!</p>
                 
                 <form id="guestbookForm" class="gb-form" onsubmit="handleGuestBookSubmit(event)">
                     <div class="form-group">
@@ -728,11 +705,10 @@
                         <label for="gbMessage">Tu Mensaje o Recuerdo / Message or Memory</label>
                         <textarea id="gbMessage" class="form-control" placeholder="¡Escribe tus felicitaciones aquí!..." required></textarea>
                     </div>
-                    <button type="submit" class="btn" style="width: 100%;">Dejar Mensaje ✍️</button>
+                    <button type="submit" id="btnSubmit" class="btn" style="width: 100%;">Dejar Mensaje ✍️</button>
                 </form>
 
-                <div class="gb-entries" id="guestbookEntries">
-                    </div>
+                <div class="gb-entries" id="guestbookEntries"></div>
             </div>
         </section>
     </main>
@@ -750,7 +726,16 @@
     </nav>
 
     <script>
-        // 1. COUNTDOWN SYSTEM CALCULATION
+        // --- CONFIGURACIÓN SUPABASE ---
+        // REEMPLAZA ESTOS VALORES CON TUS CREDENCIALES REALES
+        const SUPABASE_URL = "https://cksfawqsswhqqzkajkkn.supabase.co"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNrc2Zhd3Fzc3docXF6a2Fqa2tuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NzM0ODAsImV4cCI6MjA5NDM0OTQ4MH0.tRx76OrfJ04GwVVNtcnF62kH45Uv-IksOebeSXWVEo8";
+
+
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let isAdmin = sessionStorage.getItem("adminAuth") === "true";
+
+        // 1. COUNTDOWN SYSTEM
         const targetDate = new Date("May 15, 2026 18:00:00").getTime();
 
         function updateCountdown() {
@@ -775,14 +760,12 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 2. ELEMENT SCROLL INTRO INTERSECTION ENGINE
+        // 2. ELEMENT SCROLL INTRO
         const revealElements = document.querySelectorAll(".reveal");
-        
         function handleScrollReveal() {
             revealElements.forEach(element => {
                 const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                if (elementTop < windowHeight - 40) {
+                if (elementTop < window.innerHeight - 40) {
                     element.classList.add("visible");
                 }
             });
@@ -790,119 +773,94 @@
         window.addEventListener("scroll", handleScrollReveal);
         handleScrollReveal();
 
-        // 3. AMBIENT AUDIO LOGIC CONTROLLER
+        // 3. AMBIENT AUDIO
         const music = document.getElementById("music");
         const musicBtn = document.getElementById("musicBtn");
-
         musicBtn.addEventListener("click", () => {
             if (music.paused) {
-                music.play().then(() => {
-                    musicBtn.innerText = "⏸";
-                }).catch(err => console.log("Audio blocked by user gesture requirements:", err));
+                music.play().then(() => musicBtn.innerText = "⏸").catch(err => console.log(err));
             } else {
                 music.pause();
                 musicBtn.innerText = "♫";
             }
         });
-        // 4. CONTROL DE ACCESO SIMPLE (Comparación directa en texto plano)
+
+        // 4. CONTROL DE ACCESO ÁLBUM
         function checkPassword() {
-            // Limpiamos espacios accidentales que puedan meter los teclados móviles
             const input = document.getElementById("albumPassword").value.trim();
             const errorMsg = document.getElementById("errorMsg");
-            
-            // Validación directa sin cifrado
             if (input === "Emma2026") {
                 errorMsg.style.display = "none";
                 document.getElementById("lockContainer").style.display = "none";
                 document.getElementById("albumAccess").style.display = "block";
-                
-                // Redirección inmediata al álbum de fotos
                 window.open("https://photos.app.goo.gl/7khhs5sgzyDAyio19", "_blank");
             } else {
-                // Contraseña incorrecta
                 errorMsg.style.display = "block";
                 document.getElementById("albumPassword").value = "";
             }
         }
 
-        document.getElementById("albumPassword")?.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                checkPassword();
+        // 5. MODO ADMINISTRADOR GUESTBOOK
+        function toggleAdminMode() {
+            if (!isAdmin) {
+                if (prompt("Clave de administrador:") === "Emma2026") {
+                    isAdmin = true;
+                    sessionStorage.setItem("adminAuth", "true");
+                    renderGuestBook();
+                }
+            } else {
+                isAdmin = false;
+                sessionStorage.removeItem("adminAuth");
+                renderGuestBook();
             }
-        });
-
-        // 5. DATA LOCAL PERSISTENCE STORAGE LAYER FOR GUEST BOOK
-        const STORAGE_KEY = "mqp_emma_guestbook_entries";
-
-        // Initial standard default entries to populate empty state seamlessly
-        const seedEntries = [
-            { name: "Julian Zuniga", date: "Hace unos momentos", message: "¡Felices 15, Emma! Te amo mucho ✨" },
-            { name: "Familia Zuniga Calderon", date: "Ayer", message: "Nos da muchísimo gusto verte cumplir tus quince años por fin. Tus papás están muy orgullosos de ti. ¡Que se cumplan todos tus deseos!" }
-        ];
-
-        function getEntries() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : seedEntries;
         }
 
-        function renderGuestBook() {
-            const entries = getEntries();
-            const container = document.getElementById("guestbookEntries");
-            container.innerHTML = "";
+        // 6. BORRAR COMENTARIO SUPABASE
+        async function deleteEntry(id) {
+            if (!confirm("¿Borrar este mensaje?")) return;
+            const { error } = await _supabase.from('guestbook').delete().eq('id', id);
+            if (!error) renderGuestBook();
+        }
 
-            entries.forEach(entry => {
-                const initial = entry.name ? entry.name.charAt(0) : "U";
-                const cardHtml = `
+        // 7. CARGAR MENSAJES SUPABASE
+        async function renderGuestBook() {
+            const container = document.getElementById("guestbookEntries");
+            container.innerHTML = "<p class='texto'>Cargando mensajes...</p>";
+            const { data, error } = await _supabase.from('guestbook').select('*').order('created_at', { ascending: false });
+            if (error) return;
+            container.innerHTML = "";
+            data.forEach(entry => {
+                const initial = entry.name.charAt(0).toUpperCase();
+                const date = new Date(entry.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                const delBtn = isAdmin ? `<button onclick="deleteEntry(${entry.id})" style="color:red; background:none; border:none; cursor:pointer; font-size:0.7rem;">[Borrar]</button>` : '';
+                container.innerHTML += `
                     <div class="gb-card">
                         <div class="gb-avatar">${initial}</div>
                         <div class="gb-content">
-                            <div class="gb-meta">
-                                <span class="gb-name">${escapeHtml(entry.name)}</span>
-                                <span class="gb-date">${entry.date}</span>
-                            </div>
-                            <p class="gb-text">"${escapeHtml(entry.message)}"</p>
+                            <div class="gb-meta"><span class="gb-name">${entry.name}</span> <span class="gb-date">${date}</span></div>
+                            <p class="gb-text">"${entry.message}"</p>
+                            ${delBtn}
                         </div>
-                    </div>
-                `;
-                container.innerHTML += cardHtml;
+                    </div>`;
             });
         }
 
-        function handleGuestBookSubmit(event) {
+        // 8. ENVIAR MENSAJE SUPABASE
+        async function handleGuestBookSubmit(event) {
             event.preventDefault();
-            const nameInput = document.getElementById("gbName");
-            const messageInput = document.getElementById("gbMessage");
-
-            const newEntry = {
-                name: nameInput.value.trim(),
-                message: messageInput.value.trim(),
-                date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-            };
-
-            const currentEntries = getEntries();
-            currentEntries.unshift(newEntry); // Add to top of array runtime stack
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentEntries));
-
-            // Reset UI components
-            nameInput.value = "";
-            messageInput.value = "";
-            renderGuestBook();
+            const name = document.getElementById("gbName").value.trim();
+            const message = document.getElementById("gbMessage").value.trim();
+            const btn = document.getElementById("btnSubmit");
+            btn.disabled = true;
+            const { error } = await _supabase.from('guestbook').insert([{ name, message }]);
+            if (!error) {
+                document.getElementById("guestbookForm").reset();
+                renderGuestBook();
+            }
+            btn.disabled = false;
         }
 
-        function escapeHtml(text) {
-            return text
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        // Initialize components inside window DOM injection cycle
-        document.addEventListener("DOMContentLoaded", () => {
-            renderGuestBook();
-        });
+        document.addEventListener("DOMContentLoaded", renderGuestBook);
     </script>
 </body>
 </html>
