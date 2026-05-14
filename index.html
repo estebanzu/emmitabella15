@@ -21,6 +21,8 @@
             --mqp-section-bg: #FFF5F5;
             --mqp-accent-pink: #F5C6C0;
             --mqp-gold: #C9916A;
+            /* Nuevo Gradiente Metálico */
+            --mqp-gold-gradient: linear-gradient(to bottom, #bf953f 20%, #fcf6ba 40%, #b38728 50%, #fbf5b7 70%, #aa771c 100%);
             --mqp-gold-dark: #9E6B49;
             --mqp-text-dark: #332B28;
             --mqp-text-muted: #736762;
@@ -74,12 +76,22 @@
             font-weight: 500;
         }
 
+        /* EFECTO DE TEXTO DORADO APLICADO AQUÍ */
         h1 {
             font-family: 'Alex Brush', cursive;
             font-size: clamp(3.8rem, 12vw, 6.5rem);
-            color: var(--mqp-gold);
             line-height: 1.1;
             margin-bottom: 15px;
+            
+            /* Gradiente Metálico */
+            background: var(--mqp-gold-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            
+            /* Sombra para legibilidad */
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+            display: inline-block;
         }
 
         .mqp-divider {
@@ -600,8 +612,8 @@
 
     <header id="inicio">
         <div class="hero-title-container reveal">
-            <p class="subtitulo">Welcome to my Quinceañera page</p>
-            <h1>Emma de La O</h1>
+            <p class="subtitulo">Bienvenidos a mi página de XV</p>
+            <h1>Los Quince de Emma</h1>
             <div class="mqp-divider"></div>
             <p class="fecha">15 de Mayo de 2026 · 6:00 PM</p>
             <div class="scroll-indicator">Scroll down to learn more ✨</div>
@@ -708,7 +720,7 @@
             </section>
         </div>
 
-        <!-- SECCIÓN DE LIBRO DE VISITAS RESTAURADA -->
+        <!-- SECCIÓN DE LIBRO DE VISITAS -->
         <section class="seccion reveal" id="libro">
             <div class="tarjeta">
                 <div style="text-align: right; margin-bottom: 10px;">
@@ -748,7 +760,6 @@
 
     <script>
         // --- CONFIGURACIÓN SUPABASE ---
-        // REEMPLAZA ESTOS VALORES CON TUS CREDENCIALES REALES
         const SUPABASE_URL = "https://cksfawqsswhqqzkajkkn.supabase.co"; 
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNrc2Zhd3Fzc3docXF6a2Fqa2tuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NzM0ODAsImV4cCI6MjA5NDM0OTQ4MH0.tRx76OrfJ04GwVVNtcnF62kH45Uv-IksOebeSXWVEo8";
 
@@ -806,7 +817,7 @@
             }
         });
 
-        // 4. CONTROL DE ACCESO ÁLBUM (BOTÓN DINÁMICO E INFALIBLE)
+        // 4. CONTROL DE ACCESO ÁLBUM
         function checkPassword() {
             const input = document.getElementById("albumPassword").value.trim();
             const errorMsg = document.getElementById("errorMsg");
@@ -818,7 +829,6 @@
                 document.getElementById("lockContainer").style.display = "none";
                 document.getElementById("albumAccess").style.display = "block";
                 
-                // Creamos el botón de la nada para que no esté en el código fuente original
                 const btn = document.createElement("a");
                 btn.href = secretUrl;
                 btn.target = "_blank";
@@ -826,8 +836,6 @@
                 btn.innerText = "Ver y Subir Fotos / Videos";
                 
                 linkContainer.appendChild(btn);
-
-                // Abrir automáticamente después de la validación
                 window.open(secretUrl, "_blank");
             } else {
                 errorMsg.style.display = "block";
