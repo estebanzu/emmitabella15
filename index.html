@@ -567,10 +567,31 @@
             .vestimenta { grid-template-columns: 1fr 1fr; }
             .tarjeta { padding: 60px 50px; }
         }
+
+        .event-overlay {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid var(--mqp-gold);
+            color: var(--mqp-text-dark);
+            padding: 12px 24px;
+            border-radius: 999px;
+            box-shadow: 0 16px 40px rgba(51, 43, 40, 0.12);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            z-index: 10001;
+            font-size: 0.95rem;
+            text-align: center;
+            max-width: calc(100% - 40px);
+        }
     </style>
 </head>
 <body>
 
+    <div class="event-overlay">El evento está pronto a empezar</div>
     <button class="music-btn" id="musicBtn">♫</button>
 
     <audio id="music" loop>
